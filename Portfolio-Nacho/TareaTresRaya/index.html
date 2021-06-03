@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tres en raya</title>
+    <script>
+        var mapa = [0, 0, 0, 0, 0, 0, 0, 0, 0, ]                                                  //Declaramos el mapa con una variable de tipo array en el que indicamos su dimensión.                                                                                                   
+        var jugador = 1;                                                                          //Declaramos la variable jugador y la inicializamos.
+        
+        function dibujar(){                                                                       //Creamos la función que dibuja.
+            for (let i = 0; i < 9; i++) {
+                if (mapa[i] == 0) document.getElementById("c" + i).style = "background-color: white"; //El metodo getElementByID permite seleccionar un elemento 
+                if (mapa[i] == 1) document.getElementById("c" + i).style = "background-color: red";   //del documento por medio del valor del atributo id que se le haya asignado
+                if (mapa[i] == 2) document.getElementById("c" + i).style = "background-color: blue";  //en este caso "c" + i. Con el .style indicamos la información del estilo, en este caso con background-color escogemos el color de celda deseado.
+                                                                                                      
+            }
+        }
+
+        function pcelda(celda){            //Creamos la función que rellenará la casilla del color que le corresponda al jugador de dicho turno, dicha función.
+            if (mapa[celda] == 0) {     
+                if (jugador == 1) {        //Utiliza el valor de la variable jugador para reconocer que color ha de pintar.
+                    mapa[celda] = 1;
+                    jugador = 2;
+                }else {
+                    mapa[celda] = 2;
+                    jugador = 1;
+                }
+            }else {
+                window.alert("No puedes pulsar sobre una celda coloreada")//Window.alert sirve para que apareca una ventana de mensaje informando que ha seleccionado una casilla ya coloreada.
+            }
+            dibujar();
+            var r = ganador(); //Declaramos la variable r y le damos el valor de ganador(). Dependiendo del jugador se mostrará un mensaje indicando del ganador o del empate.
+            switch (r) {
+                case 0:
+                    break;
+                case 1: 
+                window.alert("¡Ganó el rojo!");
+                    break;
+                case 2: 
+                window.alert("¡Ganó el azul!");
+                    break;
+                case 3: 
+                    window.alert("¡Empate!")
+                    break;
+            
+                }
+        }
+        function ganador(){     //Creamos la función del ganador la cual consiste en un bucle que recorre las casillas del mapa,
+            var numEspacios = 0;//si la posicion de i es igual a 0 la variable numEspacios creada anteriormente incrementará +1 su valor.
+            for  (i = 0; i < 9; i++) {
+                if (mapa[i] == 0) numEspacios++;
+            }
+            //Las lineas horizonatales                                                      //Estos if es para detectar si se forma el tres en raya de forma horizontal, vertical o en diagonal.
+            if (mapa[0] == mapa[1] && mapa[1] == mapa[2] && mapa[0] != 0) return mapa[0]; 
+            if (mapa[3] == mapa[4] && mapa[4] == mapa[5] && mapa[3] != 0) return mapa[3]; 
+            if (mapa[6] == mapa[7] && mapa[7] == mapa[8] && mapa[6] != 0) return mapa[6];
+            //Las lineas verticales
+            if (mapa[0] == mapa[3] && mapa[3] == mapa[0] && mapa[0] != 0) return mapa[0];
+            if (mapa[1] == mapa[4] && mapa[4] == mapa[1] && mapa[1] != 0) return mapa[1]; 
+            if (mapa[2] == mapa[5] && mapa[5] == mapa[2] && mapa[2] != 0) return mapa[2]; 
+            //Las diagonales
+            if (mapa[0] == mapa[4] && mapa[4] == mapa[8] && mapa[0] != 0) return mapa[0]; 
+            if (mapa[2] == mapa[4] && mapa[4] == mapa[6] && mapa[2] != 0) return mapa[2]; 
+
+            if (numEspacios > 0) {      
+                return 0;
+            } else {
+              return 3;  
+            }
+        }
+    </script>
+</head>
+<body>                                                                              <!--Utilizamos align para indicar en que zona queremos el objeto table y definimos sus bordes.-->
+    <table align="center" border="0">
+        <tr>
+            <td width = "300px" align="center">TRES EN RAYA 1º DAM</td>             <!--Dentro del body se ha dibujado tanto el tablero como el botón de reiniciar y el texto indicando el título del juego.-->
+        </tr>
+    </table>
+    <table align="center" border="1px">
+        <tr>
+            <td width="100px" height="100px" id="c0" onclick="pcelda(0)"></td>      <!--<tr> define la fila de una tabla,<td> define la celda de una tabla.-->
+            <td width="100px" height="100px" id="c1" onclick="pcelda(1)"></td>
+            <td width="100px" height="100px" id="c2" onclick="pcelda(2)"></td>
+        </tr>
+        <tr>
+            <td width="100px" height="100px" id="c3" onclick="pcelda(3)"></td>      <!--Indicamos la altura y anchura de nuestras celdas y les asignamos un id.--> 
+            <td width="100px" height="100px" id="c4" onclick="pcelda(4)"></td>
+            <td width="100px" height="100px" id="c5" onclick="pcelda(5)"></td>
+        </tr>
+        <tr>
+            <td width="100px" height="100px" id="c6" onclick="pcelda(6)"></td>
+            <td width="100px" height="100px" id="c7" onclick="pcelda(7)"></td>
+            <td width="100px" height="100px" id="c8" onclick="pcelda(8)"></td>      <!--El metodo onclick permite ejecutar una función cuando se clica sobre el mismo.-->
+        </tr>
+    </table>
+    <table align="center" border="0px">
+        <tr>
+            <td width="300px" align="center">
+                <br>
+                <a href="javascript:location.reload()">     <!--El metodo location.reload() carga de nuevo la URL actual, como lo hace el boton de Refresh de los navegadores. pero en este caso lo hemos hecho para reinicar el Script.-->
+                    <button>Reiniciar</button>
+                </a>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
